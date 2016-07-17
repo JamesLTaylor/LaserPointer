@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,37 +6,135 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:id="@+id/layout_main"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.cogn.laserpointer.MainActivity" >
-    
-    <Button
-        android:id="@+id/button_send_message"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="Send" />
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/text_message"
+        <EditText
+            android:layout_width="wrap_content"
+            android:minEms="2"
+            android:layout_height="wrap_content"
+            android:text="192"
+            android:id="@+id/server_address1"
+            android:inputType="number"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="."/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:minEms="2"
+            android:layout_height="wrap_content"
+            android:text="168"
+            android:id="@+id/server_address2"
+            android:inputType="number"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="."/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:minEms="2"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:id="@+id/server_address3"
+            android:inputType="number"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="."/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:minEms="2"
+            android:layout_height="wrap_content"
+            android:text="104"
+            android:id="@+id/server_address4"
+            android:inputType="number"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_set_server"
+            android:text="reset"/>
+
+    </LinearLayout>
+
+
+    <Switch
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button_send_message"
-        android:layout_alignBottom="@+id/button_send_message"
-        android:layout_toLeftOf="@+id/button_send_message"
-        android:layout_toStartOf="@+id/button_send_message"
-        android:ems="10"
-        android:hint="Please enter a message" >
+        android:textOn="Yes"
+        android:textOff="No"
+        android:text="Set CTRL and left button:"
+        android:layout_marginTop="40dp"
+        android:id="@+id/sw_ctrl" />
 
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/text_console"
+    <Switch
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_message"
-        android:layout_alignRight="@+id/button_send_message"
-        android:layout_below="@+id/button_send_message"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textOn="Yes"
+        android:textOff="No"
+        android:text="Keep screen on:"
+        android:id="@+id/sw_screen_on" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/btn_start"
+        android:background="@drawable/round_button_green"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:text="Start"
+        android:layout_gravity="center_horizontal"
+        android:padding="40dp"
+        android:layout_marginTop="40dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_pg_up"
+            android:background="@drawable/tiangle_left"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:text="Prev"
+            android:padding="10dp"
+            android:textAlignment="viewEnd"
+            android:layout_marginLeft="-75dp"/>
+
+
+       <Button
+            android:id="@+id/btn_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click"
+            android:padding="10dp"
+            android:layout_centerInParent="true"/>
+
+
+        <Button
+            android:id="@+id/btn_pg_dwn"
+            android:background="@drawable/tiangle_right"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:text="Next"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="-75dp"
+            android:textAlignment="viewStart" />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

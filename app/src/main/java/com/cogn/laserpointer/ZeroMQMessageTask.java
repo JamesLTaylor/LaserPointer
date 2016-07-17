@@ -20,12 +20,12 @@ public class ZeroMQMessageTask extends AsyncTask<String, Void, String> {
         socket.connect("tcp://192.168.1.104:5555");
  
         socket.send(params[0].getBytes(), 0);
-        String result = new String(socket.recv(0));
+        //String result = new String(socket.recv(0));
  
         socket.close();
         context.term();
  
-        return result;
+        return "";
     }
  
     @Override

@@ -4,6 +4,18 @@
     tools:context="example.jeromq_example.MainActivity" >
 
     <item
+        android:id="@+id/action_calibrate"
+        android:orderInCategory="100"
+        android:title="Calibrate"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_test"
+        android:orderInCategory="100"
+        android:title="Test"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
