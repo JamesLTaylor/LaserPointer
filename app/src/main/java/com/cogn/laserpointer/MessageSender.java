@@ -1,12 +1,7 @@
 package com.cogn.laserpointer;
 
-import android.app.Activity;
-import android.util.Log;
 
 import org.zeromq.ZMQ;
-
-import java.net.UnknownHostException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 public class MessageSender {
@@ -52,17 +47,14 @@ public class MessageSender {
         if (!isRunning) {
             throw new IllegalStateException("No server is running");
         }
-        Log.d("TAG","Waiting for a gap to send");
         for (int i = 0; i < 40; i++) {
             if (!busySending) {
-                Log.d(TAG, "Send requested");
                 this.message = message;
                 busySending = true;
                 while (busySending && isRunning) {
 
                 }
                 if (isRunning) {
-                    Log.d(TAG, "Sent");
                     return;
                 } else {
                     throw new TimeoutException("Server stopped running while waiting for a response");
@@ -93,7 +85,7 @@ public class MessageSender {
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mainActivity.showDialogTestError();
+                        mainActivity.showDialogNoResponseError();
                     }
                 });
             }
@@ -103,7 +95,6 @@ public class MessageSender {
                     socket.send(message.getBytes(), 0);
                     byte[] response = socket.recv(0);
                     if (response==null) {
-                        Log.d(TAG,"null response, possible timeout, restarting socket");
                         socket.close();
                         context.term();
                         context = ZMQ.context(1);
@@ -130,7 +121,6 @@ public class MessageSender {
 
     public void start()
     {
-        Log.d(TAG, "SCAN START REQUESTED");
         new Thread(new Runnable() {
             public void run() {
                 sendMsgWhenNotNull();
@@ -140,10 +130,8 @@ public class MessageSender {
 
     public void stop() {
         requestStop = true;
-        Log.d(TAG, "STOP REQUESTED. WAITING...");
         for (int i = 0; i < 30; i++) {
             if (!isRunning) {
-                Log.d(TAG, "CONFIRMED STOP");
                 requestStop = false;
                 return;
             }
@@ -153,7 +141,6 @@ public class MessageSender {
                 e.printStackTrace();
             }
         }
-        Log.d("TAG", "did not stop after 3s, something is wrong.  request stop flag left on.");
     }
 
     private void showDialogGeneralErrorOnUi(final String title, final String message) {

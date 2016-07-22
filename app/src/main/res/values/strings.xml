@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Laser Pointer</string>
     <string name="action_settings">Settings</string>
     <string name="press_locate_button">Press a location button, then OK</string>
-
+    <string name="help_heading_setup"><b><u>Setup</u></b></string>
+    <string name="help_heading_usage"><b><u>Usage</u></b></string>
+    <string name="help_heading_quick"><b><u>Quick guide</u></b></string>
 </resources>

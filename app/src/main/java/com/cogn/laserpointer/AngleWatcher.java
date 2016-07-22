@@ -34,7 +34,6 @@ public class AngleWatcher implements SensorEventListener {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             yAvg = yAvg*0.9 + 0.1*event.values[1];
             xAvg = xAvg*0.9 + 0.1*event.values[0];
-            //Log.d(MainActivity.TAG, "TYPE_ACCELEROMETER:" + event.values[1]+ "," + yAvg);
             long now = Calendar.getInstance().getTimeInMillis();
 
             if (mustSend && (now-lastSend)>50) {

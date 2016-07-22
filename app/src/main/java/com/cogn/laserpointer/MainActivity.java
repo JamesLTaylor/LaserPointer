@@ -10,7 +10,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -117,22 +116,19 @@ public class MainActivity extends Activity
 		int id = item.getItemId();
         if (id==R.id.action_calibrate) {
             angleWatcher.mustSend = false;
-
             Intent intent = new Intent(this, CalibrateActivity.class);
             startActivity(intent);
             return true;
         }
-		if (id == R.id.action_settings) {
-			return true;
-		}
+        if (id==R.id.action_help) {
+            Intent intent = new Intent(this, HelpActivity.class);
+            startActivity(intent);
+            return true;
+        }
         if (id == R.id.action_test) {
             testTime();
             return true;
         }
-		if (id == R.id.Exit) {
-			this.finish();
-			return true;
-		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -175,18 +171,19 @@ public class MainActivity extends Activity
         dialog.show();
     }
 
-    public void showDialogTestError() {
+    public void showDialogNoResponseError() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("No response");
-        dialog.setMessage("No server responded from the provided IP address.  Please try the following:" +
-                "\n\nCheck that a LaserPointer server is running on your computer" +
-                "\n\nMake sure your phone and computer are connected to the same network" +
-                "\n\nCheck the address displayed on the server" +
-                "\n\nType this into the IP address area above" +
-                "");
+        dialog.setMessage("No server responded.");
         dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // do nothing
+            }
+        });
+        dialog.setNeutralButton("Help", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(intent);
             }
         });
         dialog.setIcon(android.R.drawable.ic_dialog_alert);
@@ -211,10 +208,10 @@ public class MainActivity extends Activity
         try {
             messageSender.sendMessageAndWait("z0,0");
         } catch (TimeoutException e)  {
-            showDialogGeneralError("Could not send","Could not send the message, make sure nothing else is sending");
+            showDialogNoResponseError();
             return;
         } catch (IllegalStateException e) {
-            showDialogTestError();
+            showDialogNoResponseError();
             return;
         }
 
@@ -223,7 +220,7 @@ public class MainActivity extends Activity
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    showDialogTestError();
+                    showDialogNoResponseError();
                 }
             });
         }
@@ -270,7 +267,6 @@ public class MainActivity extends Activity
     public boolean onTouch(View view , MotionEvent event ) {
         switch ( event.getAction() ) {
             case MotionEvent.ACTION_DOWN: {
-                Log.d(TAG, "Button down");
                 try {
                     messageSender.sendMessageAndWait("dy");
                 } catch (TimeoutException e) {
@@ -279,7 +275,6 @@ public class MainActivity extends Activity
                 break;
             }
             case MotionEvent.ACTION_UP: {
-                Log.d(TAG, "Button up");
                 try {
                     messageSender.sendMessageAndWait("dn");
                 } catch (TimeoutException e) {
@@ -307,20 +302,16 @@ public class MainActivity extends Activity
             case (R.id.btn_pg_up): {
                 try {
                     messageSender.sendMessageAndWait("pu");
-                } catch (TimeoutException e) {
-                    showDialogGeneralError("Timeout","Could not send page up, test server and try again.");
-                } catch (IllegalStateException e) {
-                    showDialogGeneralError("No Server","Could not send page up, test server and try again.");
+                } catch (TimeoutException | IllegalStateException e) {
+                    showDialogNoResponseError();
                 }
                 break;
             }
             case (R.id.btn_pg_dwn): {
                 try {
                     messageSender.sendMessageAndWait("pd");
-                } catch (TimeoutException e) {
-                    showDialogGeneralError("Timeout","Could not send page down, test server and try again.");
-                } catch (IllegalStateException e) {
-                    showDialogGeneralError("No Server","Could not send page down, test server and try again.");
+                } catch (TimeoutException | IllegalStateException e) {
+                    showDialogNoResponseError();
                 }
                 break;
             }
@@ -333,14 +324,14 @@ public class MainActivity extends Activity
             if (isChecked) {
                 try {
                     messageSender.sendMessageAndWait("cy");
-                } catch (Exception e) {
-                    showDialogGeneralError("Error","Did not send, check server");
+                } catch (TimeoutException | IllegalStateException e) {
+                    showDialogNoResponseError();
                 }
             } else {
                 try {
                     messageSender.sendMessageAndWait("cn");
-                } catch (Exception e) {
-                    showDialogGeneralError("Error","Did not send, check server");
+                } catch (TimeoutException | IllegalStateException e) {
+                    showDialogNoResponseError();
                 }
             }
         }
